@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Put data to hex file</title>
+  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="putData.js" charset="utf-8"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <body>
+    <script type="text/javascript">
+      function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+
+      function generate() {
+        Promise.all([
+          fetch('mbit-v1.hex').then(x => x.text())
+        ]).then(([hex]) => {
+          download('mbit.hex', putData(hex, document.getElementById('input').value))
+        })
+      }
+    </script>
+    <div style="margin-right: 10%; margin-left: 10%; margin-top: 5%">
+      <input type="text" value="Hello, World!!!" id="input">
+      <button onclick="generate()" class="btn btn2 blue">generate Hex for microbit</button>
+      <h3>About</h3>
+      <hr>
+      put the text you want to print in Serial from microbit in the input box and this vanilla js page generates a hex with that data for you without using c compiler(everyting happens in browser) and you can drag and drop generated hex into "MICROBIT" drive in your computer and then see result in Serial monitor
+      <br>
+      more info: <a href="https://github.com/radinParsaei/microbit-put-data-on-hex">https://github.com/radinParsaei/microbit-put-data-on-hex<a/>
+    </div>
+  </body>
+</html>
